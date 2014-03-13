@@ -22,6 +22,9 @@
 		C65F23BE18D1E05300C71D10 /* HJLandingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23BC18D1E05300C71D10 /* HJLandingViewController.m */; };
 		C65F23BF18D1E05300C71D10 /* HJLandingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C65F23BD18D1E05300C71D10 /* HJLandingViewController.xib */; };
 		C65F23C118D1E49C00C71D10 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C65F23C018D1E49C00C71D10 /* MapKit.framework */; };
+		C65F23C418D1FD3F00C71D10 /* HJMessageBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23C318D1FD3F00C71D10 /* HJMessageBubbleView.m */; };
+		C65F23C618D1FD4C00C71D10 /* HJMessageBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C65F23C518D1FD4C00C71D10 /* HJMessageBubbleView.xib */; };
+		C65F23C918D1FE5C00C71D10 /* HJMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23C818D1FE5C00C71D10 /* HJMessageManager.m */; };
 		D96BC05BA16D4F4E810ABB7F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DEEECA894E64C45A106F3CF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +61,11 @@
 		C65F23BC18D1E05300C71D10 /* HJLandingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJLandingViewController.m; sourceTree = "<group>"; };
 		C65F23BD18D1E05300C71D10 /* HJLandingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HJLandingViewController.xib; sourceTree = "<group>"; };
 		C65F23C018D1E49C00C71D10 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		C65F23C218D1FD3F00C71D10 /* HJMessageBubbleView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJMessageBubbleView.h; sourceTree = "<group>"; };
+		C65F23C318D1FD3F00C71D10 /* HJMessageBubbleView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJMessageBubbleView.m; sourceTree = "<group>"; };
+		C65F23C518D1FD4C00C71D10 /* HJMessageBubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HJMessageBubbleView.xib; sourceTree = "<group>"; };
+		C65F23C718D1FE5C00C71D10 /* HJMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJMessageManager.h; sourceTree = "<group>"; };
+		C65F23C818D1FE5C00C71D10 /* HJMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJMessageManager.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +135,8 @@
 				C65F239518D1DA0800C71D10 /* HJAppDelegate.m */,
 				C65F239718D1DA0800C71D10 /* Images.xcassets */,
 				C65F238C18D1DA0800C71D10 /* Supporting Files */,
+				C65F23C718D1FE5C00C71D10 /* HJMessageManager.h */,
+				C65F23C818D1FE5C00C71D10 /* HJMessageManager.m */,
 			);
 			path = "Hey Jane";
 			sourceTree = "<group>";
@@ -166,6 +176,9 @@
 				C65F23BB18D1E05300C71D10 /* HJLandingViewController.h */,
 				C65F23BC18D1E05300C71D10 /* HJLandingViewController.m */,
 				C65F23BD18D1E05300C71D10 /* HJLandingViewController.xib */,
+				C65F23C218D1FD3F00C71D10 /* HJMessageBubbleView.h */,
+				C65F23C318D1FD3F00C71D10 /* HJMessageBubbleView.m */,
+				C65F23C518D1FD4C00C71D10 /* HJMessageBubbleView.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -250,6 +263,7 @@
 			files = (
 				C65F239018D1DA0800C71D10 /* InfoPlist.strings in Resources */,
 				C65F23BF18D1E05300C71D10 /* HJLandingViewController.xib in Resources */,
+				C65F23C618D1FD4C00C71D10 /* HJMessageBubbleView.xib in Resources */,
 				C65F239818D1DA0800C71D10 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -304,6 +318,8 @@
 			files = (
 				C65F239618D1DA0800C71D10 /* HJAppDelegate.m in Sources */,
 				C65F23BE18D1E05300C71D10 /* HJLandingViewController.m in Sources */,
+				C65F23C918D1FE5C00C71D10 /* HJMessageManager.m in Sources */,
+				C65F23C418D1FD3F00C71D10 /* HJMessageBubbleView.m in Sources */,
 				C65F239218D1DA0800C71D10 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
