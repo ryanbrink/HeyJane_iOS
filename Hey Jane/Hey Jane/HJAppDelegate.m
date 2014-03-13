@@ -7,6 +7,8 @@
 //
 
 #import "HJAppDelegate.h"
+#import <Parse/Parse.h>
+#import "HJLandingViewController.h"
 
 @implementation HJAppDelegate
 
@@ -15,6 +17,14 @@
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
+    
+    [Parse setApplicationId:@"DUp9qMI1BV0Kxj1cfixxTdoeUMihoFh6o5Xys0U4"
+                  clientKey:@"yufVujMbbyHlR6mzDFx71RIhQuWlbkNTShdvFrF7"];
+    
+    UIViewController *loginView = [[HJLandingViewController alloc] initWithNibName:@"HJLandingViewController" bundle:nil];
+    
+    self.window.rootViewController = loginView;
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
