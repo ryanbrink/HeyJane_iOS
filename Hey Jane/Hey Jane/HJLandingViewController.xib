@@ -13,6 +13,8 @@
                 <outlet property="messageTextView" destination="n6S-Vb-p0D" id="rvF-cc-ZAu"/>
                 <outlet property="messageViewBackgroundButton" destination="Vjp-QL-2Cr" id="gxs-25-DN8"/>
                 <outlet property="messageViewHorizontalConstraint" destination="1b9-2J-13l" id="Jb0-FG-jfj"/>
+                <outlet property="sendMessageView" destination="dMm-F2-TpM" id="cc9-rX-7z6"/>
+                <outlet property="settingsButtonView" destination="qA0-p4-WiV" id="8cU-hz-b6L"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -62,7 +64,7 @@
                                 <constraint firstAttribute="height" constant="262" id="kmJ-u6-KxV"/>
                             </constraints>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-GearIcon" translatesAutoresizingMaskIntoConstraints="NO" id="qA0-p4-WiV">
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-GearIcon" translatesAutoresizingMaskIntoConstraints="NO" id="qA0-p4-WiV">
                             <rect key="frame" x="265" y="20" width="40" height="40"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
@@ -71,7 +73,7 @@
                             </constraints>
                         </imageView>
                         <view alpha="0.0" contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wjD-ya-twU">
-                            <rect key="frame" x="0.0" y="176" width="320" height="284"/>
+                            <rect key="frame" x="0.0" y="181" width="320" height="284"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble" translatesAutoresizingMaskIntoConstraints="NO" id="rpH-dq-rOg">
@@ -94,13 +96,24 @@
                                         <action selector="didPressGo:" destination="-1" eventType="touchUpInside" id="ywu-cF-NCz"/>
                                     </connections>
                                 </button>
-                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="SEND A MESSAGE!" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="n6S-Vb-p0D">
-                                    <rect key="frame" x="26" y="32" width="267" height="135"/>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="SEND A MESSAGE FROM YOUR LOCATION" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="dMm-F2-TpM">
+                                    <rect key="frame" x="27" y="20" width="267" height="147"/>
                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="tintColor" red="1" green="0.94901960780000005" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="147" id="0BN-xn-eUl"/>
+                                        <constraint firstAttribute="width" constant="267" id="cAY-yB-mR5"/>
+                                    </constraints>
+                                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="12"/>
+                                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                                </textView>
+                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n6S-Vb-p0D">
+                                    <rect key="frame" x="26" y="20" width="267" height="147"/>
+                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                     <color key="tintColor" red="1" green="0.94901960784313721" blue="0.14509803921568626" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="135" id="2tP-Sr-H7o"/>
+                                        <constraint firstAttribute="height" constant="147" id="2tP-Sr-H7o"/>
                                         <constraint firstAttribute="width" constant="267" id="66e-s2-rJy"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
@@ -110,12 +123,14 @@
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="320" id="5xy-gW-YWn"/>
+                                <constraint firstItem="asc-WG-KrI" firstAttribute="top" secondItem="dMm-F2-TpM" secondAttribute="bottom" constant="8" symbolic="YES" id="6Iw-DJ-UIO"/>
                                 <constraint firstItem="rpH-dq-rOg" firstAttribute="top" secondItem="wjD-ya-twU" secondAttribute="top" constant="11" id="7Ht-Mc-UqI"/>
-                                <constraint firstItem="n6S-Vb-p0D" firstAttribute="top" secondItem="wjD-ya-twU" secondAttribute="top" constant="32" id="O6J-Wh-JEe"/>
+                                <constraint firstItem="n6S-Vb-p0D" firstAttribute="top" secondItem="wjD-ya-twU" secondAttribute="top" constant="20" id="O6J-Wh-JEe"/>
                                 <constraint firstAttribute="height" constant="284" id="Oj3-nY-Ynr"/>
                                 <constraint firstItem="rpH-dq-rOg" firstAttribute="leading" secondItem="wjD-ya-twU" secondAttribute="leading" constant="14" id="Tug-3D-EwV"/>
                                 <constraint firstItem="n6S-Vb-p0D" firstAttribute="leading" secondItem="wjD-ya-twU" secondAttribute="leading" constant="26" id="WKl-i1-D1C"/>
                                 <constraint firstAttribute="bottom" secondItem="rpH-dq-rOg" secondAttribute="bottom" constant="7" id="aUx-s3-WZ5"/>
+                                <constraint firstItem="dMm-F2-TpM" firstAttribute="centerX" secondItem="asc-WG-KrI" secondAttribute="centerX" id="bDu-Jk-0JT"/>
                                 <constraint firstItem="rpH-dq-rOg" firstAttribute="centerX" secondItem="wjD-ya-twU" secondAttribute="centerX" id="iSm-u4-Loe"/>
                                 <constraint firstItem="rpH-dq-rOg" firstAttribute="centerX" secondItem="asc-WG-KrI" secondAttribute="centerX" id="wvt-DZ-mja"/>
                                 <constraint firstItem="asc-WG-KrI" firstAttribute="top" secondItem="n6S-Vb-p0D" secondAttribute="bottom" constant="8" id="z2h-kR-Q5O"/>
@@ -127,7 +142,7 @@
                         <constraint firstItem="wpD-as-j7l" firstAttribute="centerX" secondItem="f5d-bT-R3b" secondAttribute="centerX" id="0VE-0w-EDd"/>
                         <constraint firstAttribute="bottom" secondItem="Vjp-QL-2Cr" secondAttribute="bottom" id="0sI-dZ-zvt"/>
                         <constraint firstItem="Vjp-QL-2Cr" firstAttribute="leading" secondItem="RWm-M4-npP" secondAttribute="leading" id="1Ix-vy-Xyc"/>
-                        <constraint firstAttribute="bottom" secondItem="wjD-ya-twU" secondAttribute="top" constant="30" id="1b9-2J-13l"/>
+                        <constraint firstAttribute="bottom" secondItem="wjD-ya-twU" secondAttribute="top" constant="50" id="1b9-2J-13l"/>
                         <constraint firstItem="f5d-bT-R3b" firstAttribute="leading" secondItem="RWm-M4-npP" secondAttribute="leading" constant="88" id="5CM-aB-rgK"/>
                         <constraint firstItem="wpD-as-j7l" firstAttribute="top" secondItem="RWm-M4-npP" secondAttribute="top" constant="274" id="6JL-df-VUq"/>
                         <constraint firstItem="HuU-ap-ada" firstAttribute="centerX" secondItem="RWm-M4-npP" secondAttribute="centerX" id="7XQ-pX-COR"/>

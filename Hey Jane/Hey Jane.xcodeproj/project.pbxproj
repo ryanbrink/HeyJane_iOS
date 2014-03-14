@@ -25,6 +25,8 @@
 		C65F23C418D1FD3F00C71D10 /* HJMessageBubbleView.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23C318D1FD3F00C71D10 /* HJMessageBubbleView.m */; };
 		C65F23C618D1FD4C00C71D10 /* HJMessageBubbleView.xib in Resources */ = {isa = PBXBuildFile; fileRef = C65F23C518D1FD4C00C71D10 /* HJMessageBubbleView.xib */; };
 		C65F23C918D1FE5C00C71D10 /* HJMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23C818D1FE5C00C71D10 /* HJMessageManager.m */; };
+		C65F23CC18D35C4200C71D10 /* HJSettingsPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23CB18D35C4200C71D10 /* HJSettingsPanel.m */; };
+		C65F23CE18D35C5700C71D10 /* HJSettingsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = C65F23CD18D35C5700C71D10 /* HJSettingsPanel.xib */; };
 		D96BC05BA16D4F4E810ABB7F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DEEECA894E64C45A106F3CF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -66,6 +68,9 @@
 		C65F23C518D1FD4C00C71D10 /* HJMessageBubbleView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HJMessageBubbleView.xib; sourceTree = "<group>"; };
 		C65F23C718D1FE5C00C71D10 /* HJMessageManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJMessageManager.h; sourceTree = "<group>"; };
 		C65F23C818D1FE5C00C71D10 /* HJMessageManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJMessageManager.m; sourceTree = "<group>"; };
+		C65F23CA18D35C4100C71D10 /* HJSettingsPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJSettingsPanel.h; sourceTree = "<group>"; };
+		C65F23CB18D35C4200C71D10 /* HJSettingsPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJSettingsPanel.m; sourceTree = "<group>"; };
+		C65F23CD18D35C5700C71D10 /* HJSettingsPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HJSettingsPanel.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -179,6 +184,9 @@
 				C65F23C218D1FD3F00C71D10 /* HJMessageBubbleView.h */,
 				C65F23C318D1FD3F00C71D10 /* HJMessageBubbleView.m */,
 				C65F23C518D1FD4C00C71D10 /* HJMessageBubbleView.xib */,
+				C65F23CA18D35C4100C71D10 /* HJSettingsPanel.h */,
+				C65F23CB18D35C4200C71D10 /* HJSettingsPanel.m */,
+				C65F23CD18D35C5700C71D10 /* HJSettingsPanel.xib */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -233,6 +241,9 @@
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = HeyJane;
 				TargetAttributes = {
+					C65F238118D1DA0800C71D10 = {
+						DevelopmentTeam = 9Y664475S5;
+					};
 					C65F239C18D1DA0800C71D10 = {
 						TestTargetID = C65F238118D1DA0800C71D10;
 					};
@@ -263,6 +274,7 @@
 			files = (
 				C65F239018D1DA0800C71D10 /* InfoPlist.strings in Resources */,
 				C65F23BF18D1E05300C71D10 /* HJLandingViewController.xib in Resources */,
+				C65F23CE18D35C5700C71D10 /* HJSettingsPanel.xib in Resources */,
 				C65F23C618D1FD4C00C71D10 /* HJMessageBubbleView.xib in Resources */,
 				C65F239818D1DA0800C71D10 /* Images.xcassets in Resources */,
 			);
@@ -317,6 +329,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C65F239618D1DA0800C71D10 /* HJAppDelegate.m in Sources */,
+				C65F23CC18D35C4200C71D10 /* HJSettingsPanel.m in Sources */,
 				C65F23BE18D1E05300C71D10 /* HJLandingViewController.m in Sources */,
 				C65F23C918D1FE5C00C71D10 /* HJMessageManager.m in Sources */,
 				C65F23C418D1FD3F00C71D10 /* HJMessageBubbleView.m in Sources */,
@@ -438,6 +451,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hey Jane/Hey Jane-Prefix.pch";
 				INFOPLIST_FILE = "Hey Jane/Hey Jane-Info.plist";
@@ -452,6 +466,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Hey Jane/Hey Jane-Prefix.pch";
 				INFOPLIST_FILE = "Hey Jane/Hey Jane-Info.plist";

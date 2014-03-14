@@ -8,15 +8,23 @@
 
 #import <UIKit/UIKit.h>
 #import <MapKit/MapKit.h>
+#import <Parse/Parse.h>
 
 @interface HJMessageBubbleView : MKAnnotationView <MKAnnotation>
 {
     CLLocationCoordinate2D coordinate;
 }
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
+@property (strong, nonatomic) PFObject *objectData;
 
+@property (weak, nonatomic) IBOutlet UIView *containerView;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBackgroundHeightConstraint;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *usersNameXConstraint;
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
+@property (weak, nonatomic) IBOutlet UILabel *usersNameLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewHorizontalSpace;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewVerticalSpace;
 
-- (void) setMessage:(NSString *) message;
+
+- (void) setData:(PFObject *) data;
 @end
