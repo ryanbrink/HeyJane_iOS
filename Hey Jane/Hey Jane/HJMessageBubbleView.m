@@ -8,24 +8,49 @@
 
 #import "HJMessageBubbleView.h"
 
-@implementation HJMessageBubbleView
 
-- (void) awakeFromNib
+@implementation HJMessageBubbleView
+@synthesize objectData;
+
+
+- (IBAction) upVote:(id)sender
 {
-    [super awakeFromNib];
+    [[self objectData] incrementKey:@"votes"];
+    [[self objectData] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!succeeded)
+        {
+            NSLog(@"%@", error);
+        }
+    }];
 }
 
-- (void) setMessage:(NSString *) message
+- (IBAction) downVote:(id)sender
 {
-    [self.messageTextView setText:message];
+    [[self objectData] incrementKey:@"votes" byAmount:[NSNumber numberWithInt:-2]];
+    [[self objectData] saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        if (!succeeded)
+        {
+            NSLog(@"%@", error);
+        }
+    }];
+}
+
+- (void) setData:(PFObject *) data
+{
+    [self setObjectData:data];
+    [self.messageTextView setText:[data valueForKey:@"message"]];
     [self.messageTextView setFont:[UIFont fontWithName:@"Gill Sans" size:15.0f]];
     [self layoutIfNeeded];
 
     CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
     
     self.textBackgroundHeightConstraint.constant = rect.size.height;
+    self.usersNameXConstraint.constant = -(self.messageTextView.layer.frame.size.height - rect.size.height);
     
+    self.subViewVerticalSpace.constant += (self.messageTextView.layer.frame.size.height-20 - rect.size.height);
     [self layoutIfNeeded];
+    
+    [self.usersNameLabel setText:[data valueForKey:@"usersName"]];
 }
 
 - (CLLocationCoordinate2D)coordinate
@@ -37,5 +62,7 @@
 {
     coordinate = newCoordinate;
 }
+
+
 
 @end

@@ -11,9 +11,11 @@
 
 typedef void (^HJMessageSaveCallback)(bool succeeded);
 typedef void (^HJMessageReceivedCallback)(bool succeeded, NSArray *messages);
+typedef void (^HJMessageDistanceFoundCallback)(bool succeeded, NSNumber *kilometers);
 
 @interface HJMessageManager : NSObject
 +(HJMessageManager *)sharedInstance;
 - (void) saveInBackgroundMessage:(NSString *) message withLocation:(CLLocation *) location withCompletionBlock:(HJMessageSaveCallback) block;
-- (void) getMessagesInBackgroundNearLocation:(CLLocation *) location withCompletionBlock:(HJMessageReceivedCallback) block;
+- (void) getMessagesInBackgroundWithin:(int) kilometers nearLocation:(CLLocationCoordinate2D) location withCompletionBlock:(HJMessageReceivedCallback) block;
+- (void) getApproximateRadiusInKilometersToRevealTenMessagesAroundCoordinate:(CLLocationCoordinate2D) location withCompletionBlock:(HJMessageDistanceFoundCallback) block;
 @end

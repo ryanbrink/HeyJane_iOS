@@ -9,14 +9,22 @@
 #import "HJLandingViewController.h"
 #import "HJMessageBubbleView.h"
 #import <Parse/Parse.h>
+#import "HJSettingsPanel.h"
+#import  "MKMapView+AttributionView.h"
 
 @interface HJLandingViewController ()
 @end
 
 @implementation HJLandingViewController
+{
+
+}
 bool isShowingNewMessage = NO;
+bool isShowingSettings = NO;
+
 CLLocationManager *locationManager;
 bool didReceiveFirstLocation = NO;
+HJSettingsPanel *settingsPanel;
 
 - (void)viewDidLoad
 {
@@ -24,7 +32,7 @@ bool didReceiveFirstLocation = NO;
     [self.mainMapView setDelegate:self];
     [self.mainMapView setShowsPointsOfInterest:NO];
     [self.mainMapView setShowsBuildings:NO];
-    [self.mainMapView setShowsUserLocation:NO];
+    [self.mainMapView setShowsUserLocation:YES];
     
     UITapGestureRecognizer *singleFingerTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -37,7 +45,24 @@ bool didReceiveFirstLocation = NO;
     
     [self.messageBubbleBackgroundImage addGestureRecognizer:messageBackgroundTap];
     
+    UITapGestureRecognizer *settingsButtonTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(didTouchSettingsImage:)];
+    
+    [self.settingsButtonView addGestureRecognizer:settingsButtonTap];
+    
     [self.messageTextView setDelegate:self];
+    
+    settingsPanel =  [[[NSBundle mainBundle] loadNibNamed:@"HJSettingsPanel"
+                                                                                      owner:self
+                                                                                    options:nil] objectAtIndex:0];
+    CGRect frame = settingsPanel.layer.frame;
+    frame.origin.x = self.view.layer.frame.size.width;
+    settingsPanel.layer.frame = frame;
+    [settingsPanel setDelegate:self];
+    [self.view addSubview:settingsPanel];
+    
+    [self.mainMapView.attributionView setHidden:YES];
 }
 
 - (void) viewDidAppear:(BOOL)animated
@@ -77,16 +102,15 @@ bool didReceiveFirstLocation = NO;
 
 - (void) bounceTextView
 {
+    [self.messageTextView setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.messageViewHorizontalConstraint.constant = 80;
+        self.messageViewHorizontalConstraint.constant = 100;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.messageViewHorizontalConstraint.constant = 30;
+            self.messageViewHorizontalConstraint.constant = 50;
             [self.view layoutIfNeeded];
         } completion:^(BOOL finished) {
-            [self.messageTextView setText:@""];
-            [self.messageTextView setTextAlignment:NSTextAlignmentLeft];
         }];
     }];
 }
@@ -94,12 +118,42 @@ bool didReceiveFirstLocation = NO;
     [self toggleMessageView];
 }
 
+- (void) toggleSettingsView
+{
+    if (isShowingSettings)
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = settingsPanel.layer.frame;
+            frame.origin.x = self.view.layer.frame.size.width;
+            settingsPanel.layer.frame = frame;
+        }];
+    }
+    else
+    {
+        [UIView animateWithDuration:0.3 animations:^{
+            CGRect frame = settingsPanel.layer.frame;
+            frame.origin.x = 0;
+            settingsPanel.layer.frame = frame;
+        }];
+    }
+    
+    isShowingSettings = !isShowingSettings;
+}
+
+- (void) didPressBackground
+{
+    [self toggleSettingsView];
+}
+
+- (IBAction)didTouchSettingsImage:(id)sender {
+    [self toggleSettingsView];
+}
+
 - (void) loadAndDisplayMessages
 {
-    [[HJMessageManager sharedInstance] getMessagesInBackgroundNearLocation:locationManager.location withCompletionBlock:^(bool succeeded, NSArray *messages) {
+    [[HJMessageManager sharedInstance] getMessagesInBackgroundWithin:[self getMapDisplaySizeMeters] nearLocation:self.mainMapView.centerCoordinate withCompletionBlock:^(bool succeeded, NSArray *messages) {
         for (PFObject *message in messages) {
             
-            NSString * messageString = [message valueForKey:@"message"];
             PFGeoPoint *point = [message valueForKey:@"location"];
             
             HJMessageBubbleView *messageView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
@@ -107,8 +161,8 @@ bool didReceiveFirstLocation = NO;
                                                                             options:nil] objectAtIndex:0];
             
             
-            [messageView setMessage:messageString];
-            messageView.coordinate =CLLocationCoordinate2DMake(point.latitude, point.longitude);
+            [messageView setData:message];
+            messageView.coordinate = CLLocationCoordinate2DMake(point.latitude, point.longitude);
             
             [self.mainMapView addAnnotation:messageView];
         }
@@ -137,7 +191,7 @@ bool didReceiveFirstLocation = NO;
                                                                             options:nil] objectAtIndex:0];
         }
         
-        [annotationView setMessage:bubbleView.messageTextView.text];
+        [annotationView setData:bubbleView.objectData];
         [annotationView setCoordinate:bubbleView.coordinate];
 
         return annotationView;
@@ -170,11 +224,14 @@ bool didReceiveFirstLocation = NO;
     [self.view layoutIfNeeded];
     self.messageViewBackgroundButton.hidden = NO;
     [UIView animateWithDuration:0.4 animations:^{
+        [self.sendMessageView setAlpha:0];
         self.messageViewHorizontalConstraint.constant = (self.messagePostView.frame.size.height + 216);
         self.messageViewBackgroundButton.alpha = 1;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
+        [self.messageTextView setUserInteractionEnabled:YES];
         [self.messageTextView setText:@""];
+        [self.messageTextView setTextAlignment:NSTextAlignmentLeft];
         [self.messageTextView becomeFirstResponder];
     }];
     
@@ -199,9 +256,11 @@ bool didReceiveFirstLocation = NO;
 
 - (void) animateOutNewMessageView
 {
+    [self.messageTextView setUserInteractionEnabled:NO];
     [self.messageTextView resignFirstResponder];
     [UIView animateWithDuration:0.4 animations:^{
-        self.messageViewHorizontalConstraint.constant = 30;
+        [self.sendMessageView setAlpha:1];
+        self.messageViewHorizontalConstraint.constant = 50;
         self.messageViewBackgroundButton.alpha = 0;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
@@ -214,6 +273,7 @@ bool didReceiveFirstLocation = NO;
 
 - (IBAction)didPressGo:(id)sender {
     [[HJMessageManager sharedInstance] saveInBackgroundMessage:self.messageTextView.text withLocation:locationManager.location withCompletionBlock:^(bool succeeded) {
+        [self loadAndDisplayMessages];
     }];
     
     [self animateOutNewMessageView];
@@ -248,15 +308,43 @@ bool didReceiveFirstLocation = NO;
     }
 }
 
+- (int) getMapDisplaySizeMeters
+{
+    MKMapRect mRect = self.mainMapView.visibleMapRect;
+    MKMapPoint eastMapPoint = MKMapPointMake(MKMapRectGetMinX(mRect), MKMapRectGetMidY(mRect));
+    MKMapPoint westMapPoint = MKMapPointMake(MKMapRectGetMaxX(mRect), MKMapRectGetMidY(mRect));
+    
+    return MKMetersBetweenMapPoints(eastMapPoint, westMapPoint)/1000;
+}
+
 - (void)locationManager:(CLLocationManager *)manager
 	didUpdateToLocation:(CLLocation *)newLocation
 		   fromLocation:(CLLocation *)oldLocation
 
 {
-    [self loadAndDisplayMessages];
-    [self.mainMapView setRegion:MKCoordinateRegionMakeWithDistance(newLocation.coordinate, 200, 200) animated:didReceiveFirstLocation];
+    if (!didReceiveFirstLocation)
+    {
+        [[HJMessageManager sharedInstance] getApproximateRadiusInKilometersToRevealTenMessagesAroundCoordinate:newLocation.coordinate withCompletionBlock:^(bool succeeded, NSNumber *kilometers) {
+           if (succeeded)
+           {
+               [self loadAndDisplayMessages];
+
+               NSLog(@"Setting initial zoom to %dKm.", [kilometers intValue]);
+               
+               [self.mainMapView setRegion:MKCoordinateRegionMakeWithDistance(newLocation.coordinate, [kilometers integerValue]*1000, [kilometers integerValue]*1000) animated:didReceiveFirstLocation];
+               
+               
+           }
+        }];
+        
+    }
     
     didReceiveFirstLocation = YES;
+}
+
+- (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
+{
+    [self loadAndDisplayMessages];
 }
 
 - (void)mapViewDidFinishRenderingMap:(MKMapView *)mapView fullyRendered:(BOOL)fullyRendered
