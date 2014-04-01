@@ -14,6 +14,8 @@
 {
     CLLocationCoordinate2D coordinate;
 }
+@property (weak, nonatomic) IBOutlet UIButton *upVoteButton;
+@property (weak, nonatomic) IBOutlet UIButton *downVoteButton;
 @property (nonatomic, readonly) CLLocationCoordinate2D coordinate;
 @property (strong, nonatomic) PFObject *objectData;
 
@@ -25,6 +27,6 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewHorizontalSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewVerticalSpace;
 
-
+- (void) setIsGroupWith:(NSNumber *) numberOfMessages;
 - (void) setData:(PFObject *) data;
 @end

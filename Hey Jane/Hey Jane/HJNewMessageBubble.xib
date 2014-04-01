@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="5053" systemVersion="13C64" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="3733"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view alpha="0.0" contentMode="scaleToFill" id="EkL-kT-nmx" customClass="HJNewMessageBubble">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="266"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble" translatesAutoresizingMaskIntoConstraints="NO" id="UqU-jk-B9S">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="266"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                </imageView>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CgY-Xc-KGH">
+                    <rect key="frame" x="131" y="157" width="57" height="30"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="57" id="MN5-5i-U7g"/>
+                        <constraint firstAttribute="height" constant="30" id="c4C-4x-2Hq"/>
+                        <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="30" id="vlm-Bo-fww"/>
+                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="57" id="yFD-hv-FVU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="30"/>
+                    <state key="normal" title="GO">
+                        <color key="titleColor" red="0.90196078430000004" green="0.18823529410000001" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="didPressGo:" destination="EkL-kT-nmx" eventType="touchUpInside" id="IPQ-Am-1TS"/>
+                    </connections>
+                </button>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" userInteractionEnabled="NO" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" text="SEND A MESSAGE FROM YOUR LOCATION" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="zlj-9j-aay">
+                    <rect key="frame" x="26" y="9" width="268" height="140"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" red="1" green="0.94901960780000005" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="12"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8my-rU-f3p">
+                    <rect key="frame" x="23" y="9" width="273" height="140"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="tintColor" red="1" green="0.94901960780000005" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="273" id="ezu-w7-qkE"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" name="GillSans" family="Gill Sans" pointSize="20"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="CgY-Xc-KGH" firstAttribute="top" secondItem="zlj-9j-aay" secondAttribute="bottom" constant="8" symbolic="YES" id="0dN-AJ-LAi"/>
+                <constraint firstItem="UqU-jk-B9S" firstAttribute="leading" secondItem="EkL-kT-nmx" secondAttribute="leading" id="14J-z4-1w8"/>
+                <constraint firstItem="CgY-Xc-KGH" firstAttribute="top" secondItem="zlj-9j-aay" secondAttribute="bottom" constant="8" id="5pk-e7-xLC"/>
+                <constraint firstAttribute="bottom" secondItem="CgY-Xc-KGH" secondAttribute="bottom" constant="79" id="8ea-Lm-bca"/>
+                <constraint firstAttribute="trailing" secondItem="zlj-9j-aay" secondAttribute="trailing" constant="26" id="M0S-yF-ijV"/>
+                <constraint firstItem="CgY-Xc-KGH" firstAttribute="leading" secondItem="EkL-kT-nmx" secondAttribute="leading" constant="131" id="M4b-mO-Jhb"/>
+                <constraint firstAttribute="trailing" secondItem="UqU-jk-B9S" secondAttribute="trailing" id="MRq-7z-z6e"/>
+                <constraint firstItem="CgY-Xc-KGH" firstAttribute="top" secondItem="8my-rU-f3p" secondAttribute="bottom" constant="8" symbolic="YES" id="PYn-4P-KR6"/>
+                <constraint firstAttribute="bottom" secondItem="UqU-jk-B9S" secondAttribute="bottom" id="QXM-yW-Ixp"/>
+                <constraint firstItem="zlj-9j-aay" firstAttribute="leading" secondItem="EkL-kT-nmx" secondAttribute="leading" constant="26" id="Qff-jk-zNs"/>
+                <constraint firstItem="CgY-Xc-KGH" firstAttribute="top" secondItem="zlj-9j-aay" secondAttribute="bottom" constant="8" id="Rbu-qf-gWI"/>
+                <constraint firstItem="UqU-jk-B9S" firstAttribute="top" secondItem="EkL-kT-nmx" secondAttribute="top" id="UFH-6e-M2G"/>
+                <constraint firstItem="CgY-Xc-KGH" firstAttribute="top" secondItem="8my-rU-f3p" secondAttribute="bottom" constant="8" id="ULk-Qz-vcV"/>
+                <constraint firstItem="zlj-9j-aay" firstAttribute="top" secondItem="EkL-kT-nmx" secondAttribute="top" constant="9" id="h6O-9c-owu"/>
+                <constraint firstAttribute="bottom" secondItem="CgY-Xc-KGH" secondAttribute="bottom" constant="79" id="hvh-p1-0jy"/>
+                <constraint firstItem="zlj-9j-aay" firstAttribute="top" relation="greaterThanOrEqual" secondItem="EkL-kT-nmx" secondAttribute="top" constant="9" id="vtn-q9-tbv"/>
+                <constraint firstItem="8my-rU-f3p" firstAttribute="top" secondItem="EkL-kT-nmx" secondAttribute="top" constant="9" id="x9u-fu-6BA"/>
+                <constraint firstAttribute="trailing" secondItem="8my-rU-f3p" secondAttribute="trailing" constant="24" id="zHA-f1-AqS"/>
+            </constraints>
+            <connections>
+                <outlet property="messageTextView" destination="8my-rU-f3p" id="oF2-bF-0hb"/>
+                <outlet property="titleTextView" destination="zlj-9j-aay" id="rXL-vT-lIw"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="HG-Bubble" width="320" height="292"/>
+    </resources>
+</document>

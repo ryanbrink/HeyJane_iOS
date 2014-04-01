@@ -130,10 +130,12 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="containerView" destination="dyu-wg-yfF" id="XoZ-dK-7Ia"/>
+                <outlet property="downVoteButton" destination="Fpv-EM-Sma" id="lMH-th-OxC"/>
                 <outlet property="messageTextView" destination="0dP-Vr-xAY" id="65G-Pw-cn2"/>
                 <outlet property="subViewHorizontalSpace" destination="2V2-UK-Gxm" id="xfz-Ea-z6A"/>
                 <outlet property="subViewVerticalSpace" destination="JkF-Yc-vzS" id="NTK-OS-ABH"/>
                 <outlet property="textBackgroundHeightConstraint" destination="vXj-Sv-Kr1" id="ehf-q4-eE1"/>
+                <outlet property="upVoteButton" destination="YML-rP-NQW" id="dsj-Tn-Rj4"/>
                 <outlet property="usersNameLabel" destination="l0c-Qu-jlR" id="pyq-yb-Uzf"/>
                 <outlet property="usersNameXConstraint" destination="XLo-vz-cKj" id="tKI-Ck-sHm"/>
             </connections>

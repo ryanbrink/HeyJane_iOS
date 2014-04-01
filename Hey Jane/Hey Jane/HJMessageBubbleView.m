@@ -35,12 +35,30 @@
     }];
 }
 
+- (void) setIsGroupWith:(NSNumber *) numberOfMessages
+{
+    [self.messageTextView setText:[NSString stringWithFormat:@"%ld messages", (long)[numberOfMessages integerValue]]];
+    [self.messageTextView setFont:[UIFont fontWithName:@"Gill Sans" size:15.0f]];
+    
+    CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
+    
+    self.textBackgroundHeightConstraint.constant = rect.size.height;
+    self.usersNameXConstraint.constant = -(self.messageTextView.layer.frame.size.height - rect.size.height);
+    
+    self.subViewVerticalSpace.constant += (self.messageTextView.layer.frame.size.height-20 - rect.size.height);
+ 
+    [self.downVoteButton setHidden:YES];
+    [self.upVoteButton setHidden:YES];
+    [self.usersNameLabel setText:@""];
+}
+
 - (void) setData:(PFObject *) data
 {
+    [self.downVoteButton setHidden:NO];
+    [self.upVoteButton setHidden:NO];
     [self setObjectData:data];
     [self.messageTextView setText:[data valueForKey:@"message"]];
     [self.messageTextView setFont:[UIFont fontWithName:@"Gill Sans" size:15.0f]];
-    [self layoutIfNeeded];
 
     CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
     
@@ -48,9 +66,10 @@
     self.usersNameXConstraint.constant = -(self.messageTextView.layer.frame.size.height - rect.size.height);
     
     self.subViewVerticalSpace.constant += (self.messageTextView.layer.frame.size.height-20 - rect.size.height);
-    [self layoutIfNeeded];
     
     [self.usersNameLabel setText:[data valueForKey:@"usersName"]];
+    
+    [self layoutIfNeeded];
 }
 
 - (CLLocationCoordinate2D)coordinate
