@@ -27,6 +27,8 @@
 		C65F23C918D1FE5C00C71D10 /* HJMessageManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23C818D1FE5C00C71D10 /* HJMessageManager.m */; };
 		C65F23CC18D35C4200C71D10 /* HJSettingsPanel.m in Sources */ = {isa = PBXBuildFile; fileRef = C65F23CB18D35C4200C71D10 /* HJSettingsPanel.m */; };
 		C65F23CE18D35C5700C71D10 /* HJSettingsPanel.xib in Resources */ = {isa = PBXBuildFile; fileRef = C65F23CD18D35C5700C71D10 /* HJSettingsPanel.xib */; };
+		C6DD607218EAF10000386DE0 /* HJNewMessageBubble.xib in Resources */ = {isa = PBXBuildFile; fileRef = C6DD607118EAF10000386DE0 /* HJNewMessageBubble.xib */; };
+		C6DD607518EAF1DC00386DE0 /* HJNewMessageBubble.m in Sources */ = {isa = PBXBuildFile; fileRef = C6DD607418EAF1DC00386DE0 /* HJNewMessageBubble.m */; };
 		D96BC05BA16D4F4E810ABB7F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0DEEECA894E64C45A106F3CF /* libPods.a */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +73,9 @@
 		C65F23CA18D35C4100C71D10 /* HJSettingsPanel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJSettingsPanel.h; sourceTree = "<group>"; };
 		C65F23CB18D35C4200C71D10 /* HJSettingsPanel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJSettingsPanel.m; sourceTree = "<group>"; };
 		C65F23CD18D35C5700C71D10 /* HJSettingsPanel.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HJSettingsPanel.xib; sourceTree = "<group>"; };
+		C6DD607118EAF10000386DE0 /* HJNewMessageBubble.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HJNewMessageBubble.xib; sourceTree = "<group>"; };
+		C6DD607318EAF1DC00386DE0 /* HJNewMessageBubble.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HJNewMessageBubble.h; sourceTree = "<group>"; };
+		C6DD607418EAF1DC00386DE0 /* HJNewMessageBubble.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HJNewMessageBubble.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +192,9 @@
 				C65F23CA18D35C4100C71D10 /* HJSettingsPanel.h */,
 				C65F23CB18D35C4200C71D10 /* HJSettingsPanel.m */,
 				C65F23CD18D35C5700C71D10 /* HJSettingsPanel.xib */,
+				C6DD607118EAF10000386DE0 /* HJNewMessageBubble.xib */,
+				C6DD607318EAF1DC00386DE0 /* HJNewMessageBubble.h */,
+				C6DD607418EAF1DC00386DE0 /* HJNewMessageBubble.m */,
 			);
 			name = UI;
 			sourceTree = "<group>";
@@ -274,6 +282,7 @@
 			files = (
 				C65F239018D1DA0800C71D10 /* InfoPlist.strings in Resources */,
 				C65F23BF18D1E05300C71D10 /* HJLandingViewController.xib in Resources */,
+				C6DD607218EAF10000386DE0 /* HJNewMessageBubble.xib in Resources */,
 				C65F23CE18D35C5700C71D10 /* HJSettingsPanel.xib in Resources */,
 				C65F23C618D1FD4C00C71D10 /* HJMessageBubbleView.xib in Resources */,
 				C65F239818D1DA0800C71D10 /* Images.xcassets in Resources */,
@@ -328,6 +337,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C6DD607518EAF1DC00386DE0 /* HJNewMessageBubble.m in Sources */,
 				C65F239618D1DA0800C71D10 /* HJAppDelegate.m in Sources */,
 				C65F23CC18D35C4200C71D10 /* HJSettingsPanel.m in Sources */,
 				C65F23BE18D1E05300C71D10 /* HJLandingViewController.m in Sources */,

@@ -12,12 +12,15 @@
 #import "HJSettingsPanel.h"
 #import  "MKMapView+AttributionView.h"
 
+#define MESSAGE_BUBBLE_HEIGHT_FROM_BOTTOM 50
+
 @interface HJLandingViewController ()
 @end
 
 @implementation HJLandingViewController
 {
-
+    NSMutableArray *loadedMessages;
+    HJNewMessageBubble *newMessageBubbleView;
 }
 bool isShowingNewMessage = NO;
 bool isShowingSettings = NO;
@@ -29,21 +32,26 @@ HJSettingsPanel *settingsPanel;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    loadedMessages = [[NSMutableArray alloc] init];
     [self.mainMapView setDelegate:self];
     [self.mainMapView setShowsPointsOfInterest:NO];
     [self.mainMapView setShowsBuildings:NO];
     [self.mainMapView setShowsUserLocation:YES];
+    [self.mainMapView setClusteringEnabled:YES];
+    [self.mainMapView setClusteringMethod:OCClusteringMethodBubble];
     
-    UITapGestureRecognizer *singleFingerTap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(didTouchMessageView:)];
-    [self.messagePostView addGestureRecognizer:singleFingerTap];
     
-    UITapGestureRecognizer *messageBackgroundTap =
-    [[UITapGestureRecognizer alloc] initWithTarget:self
-                                            action:@selector(didTouchMessageViewBackground:)];
+    self->newMessageBubbleView = [[[NSBundle mainBundle] loadNibNamed:@"HJNewMessageBubble" owner:self options:nil] objectAtIndex:0];
     
-    [self.messageBubbleBackgroundImage addGestureRecognizer:messageBackgroundTap];
+    CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
+    newBubbleFrame.origin.y = self.view.layer.frame.size.height - MESSAGE_BUBBLE_HEIGHT_FROM_BOTTOM;
+    newBubbleFrame.size.height =  self.view.layer.frame.size.height - 216;
+    self->newMessageBubbleView.layer.frame = newBubbleFrame;
+    
+    [self.view addSubview:self->newMessageBubbleView];
+    [self->newMessageBubbleView setDelegate:self];
+    [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:NO];
     
     UITapGestureRecognizer *settingsButtonTap =
     [[UITapGestureRecognizer alloc] initWithTarget:self
@@ -51,11 +59,17 @@ HJSettingsPanel *settingsPanel;
     
     [self.settingsButtonView addGestureRecognizer:settingsButtonTap];
     
-    [self.messageTextView setDelegate:self];
+    UITapGestureRecognizer *messageBackgroundTap =
+    [[UITapGestureRecognizer alloc] initWithTarget:self
+                                            action:@selector(didTouchMessageViewBackground:)];
+    
+    [self.messageBubbleBackgroundImage addGestureRecognizer:messageBackgroundTap];
     
     settingsPanel =  [[[NSBundle mainBundle] loadNibNamed:@"HJSettingsPanel"
                                                                                       owner:self
                                                                                     options:nil] objectAtIndex:0];
+    
+
     CGRect frame = settingsPanel.layer.frame;
     frame.origin.x = self.view.layer.frame.size.width;
     settingsPanel.layer.frame = frame;
@@ -102,14 +116,17 @@ HJSettingsPanel *settingsPanel;
 
 - (void) bounceTextView
 {
-    [self.messageTextView setUserInteractionEnabled:NO];
+//    [self.messageTextView setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
-        self.messageViewHorizontalConstraint.constant = 100;
-        [self.view layoutIfNeeded];
+        CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
+        newBubbleFrame.origin.y = self.view.layer.frame.size.height - 60;
+        self->newMessageBubbleView.layer.frame = newBubbleFrame;
     } completion:^(BOOL finished) {
         [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseIn animations:^{
-            self.messageViewHorizontalConstraint.constant = 50;
-            [self.view layoutIfNeeded];
+            CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
+            newBubbleFrame.origin.y = self.view.layer.frame.size.height - MESSAGE_BUBBLE_HEIGHT_FROM_BOTTOM;
+            self->newMessageBubbleView.layer.frame = newBubbleFrame;
+            
         } completion:^(BOOL finished) {
         }];
     }];
@@ -151,8 +168,31 @@ HJSettingsPanel *settingsPanel;
 
 - (void) loadAndDisplayMessages
 {
+    [self.mainMapView removeOverlays:self.mainMapView.overlays];
+    
     [[HJMessageManager sharedInstance] getMessagesInBackgroundWithin:[self getMapDisplaySizeMeters] nearLocation:self.mainMapView.centerCoordinate withCompletionBlock:^(bool succeeded, NSArray *messages) {
+        
+        NSMutableArray *newMessages = [[NSMutableArray alloc] init];
+        // Determine which (if any) messages are new
         for (PFObject *message in messages) {
+            bool didFindMatch = NO;
+            
+            for (PFObject *oldMessage in loadedMessages) {
+                if ([message.objectId isEqualToString:oldMessage.objectId])
+                {
+                    didFindMatch = YES;
+                    break;
+                }
+            }
+            
+            if (didFindMatch)
+                continue;
+            
+            [newMessages addObject:message];
+            [loadedMessages addObject:message];
+        }
+        
+        for (PFObject *message in newMessages) {
             
             PFGeoPoint *point = [message valueForKey:@"location"];
             
@@ -168,11 +208,37 @@ HJSettingsPanel *settingsPanel;
         }
         
     }];
+    
+    [self.mainMapView doClustering];
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[HJMessageBubbleView class]])
+    if ([annotation isKindOfClass:[OCAnnotation class]]) {
+        static NSString * const identifier = @"HJMessageBubbleViewAnnotation";
+        
+        OCAnnotation *cluster = (OCAnnotation *) annotation;
+        
+        HJMessageBubbleView* annotationView = (HJMessageBubbleView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
+        
+        if (annotationView)
+        {
+            annotationView.annotation = annotation;
+        }
+        else
+        {
+            
+            annotationView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
+                                                            owner:self
+                                                          options:nil] objectAtIndex:0];
+        }
+        
+        [annotationView setIsGroupWith:[NSNumber numberWithLong:cluster.annotationsInCluster.count]];
+        [annotationView setCoordinate:annotation.coordinate];
+        
+        return annotationView;
+    }
+    else if ([annotation isKindOfClass:[HJMessageBubbleView class]])
     {
         HJMessageBubbleView *bubbleView = (HJMessageBubbleView *) annotation;
         static NSString * const identifier = @"HJMessageBubbleViewAnnotation";
@@ -207,10 +273,8 @@ HJSettingsPanel *settingsPanel;
 {
     [UIView animateWithDuration:0.75 animations:^{
         self.mainMapView.alpha = 1;
-        self.messagePostView.alpha = 1;
-    } completion:^(BOOL finished) {
-        [self bounceTextView];
-    }];
+        self->newMessageBubbleView.alpha = 1;
+    } completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -221,18 +285,19 @@ HJSettingsPanel *settingsPanel;
 
 - (void) animateInNewMessageView
 {
-    [self.view layoutIfNeeded];
     self.messageViewBackgroundButton.hidden = NO;
     [UIView animateWithDuration:0.4 animations:^{
-        [self.sendMessageView setAlpha:0];
-        self.messageViewHorizontalConstraint.constant = (self.messagePostView.frame.size.height + 216);
+        [self->newMessageBubbleView.titleTextView setAlpha:0];
+        CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
+        newBubbleFrame.origin.y = 20;
+        self->newMessageBubbleView.layer.frame = newBubbleFrame;
         self.messageViewBackgroundButton.alpha = 1;
-        [self.view layoutIfNeeded];
+        [self->newMessageBubbleView.messageTextView setAlpha:1];
     } completion:^(BOOL finished) {
-        [self.messageTextView setUserInteractionEnabled:YES];
-        [self.messageTextView setText:@""];
-        [self.messageTextView setTextAlignment:NSTextAlignmentLeft];
-        [self.messageTextView becomeFirstResponder];
+        [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:YES];
+        [self->newMessageBubbleView.messageTextView setText:@""];
+        [self->newMessageBubbleView.messageTextView setTextAlignment:NSTextAlignmentLeft];
+        [self->newMessageBubbleView.messageTextView becomeFirstResponder];
     }];
     
     isShowingNewMessage = !isShowingNewMessage;
@@ -249,50 +314,26 @@ HJSettingsPanel *settingsPanel;
         [self animateInNewMessageView];
     }
 }
-- (void)didTouchMessageView:(UITapGestureRecognizer *)recognizer
-{
-    [self toggleMessageView];
-}
 
 - (void) animateOutNewMessageView
 {
-    [self.messageTextView setUserInteractionEnabled:NO];
-    [self.messageTextView resignFirstResponder];
+    [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:NO];
+    [self->newMessageBubbleView.messageTextView resignFirstResponder];
     [UIView animateWithDuration:0.4 animations:^{
-        [self.sendMessageView setAlpha:1];
-        self.messageViewHorizontalConstraint.constant = 50;
+        CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
+        newBubbleFrame.origin.y = self.view.layer.frame.size.height - MESSAGE_BUBBLE_HEIGHT_FROM_BOTTOM;
+        self->newMessageBubbleView.layer.frame = newBubbleFrame;
+        [self->newMessageBubbleView.titleTextView setAlpha:1];
+        [self->newMessageBubbleView.messageTextView setAlpha:0];
         self.messageViewBackgroundButton.alpha = 0;
         [self.view layoutIfNeeded];
     } completion:^(BOOL finished) {
         self.messageViewBackgroundButton.hidden = YES;
-        [self.messageTextView setText:@""];
+        [self->newMessageBubbleView.messageTextView setText:@""];
+        [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:NO];
     }];
     
     isShowingNewMessage = !isShowingNewMessage;
-}
-
-- (IBAction)didPressGo:(id)sender {
-    [[HJMessageManager sharedInstance] saveInBackgroundMessage:self.messageTextView.text withLocation:locationManager.location withCompletionBlock:^(bool succeeded) {
-        [self loadAndDisplayMessages];
-    }];
-    
-    [self animateOutNewMessageView];
-}
-
-#define MAX_LENGTH 130 // Whatever your limit is
-- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
-{
-    NSUInteger newLength = (textView.text.length - range.length) + text.length;
-    if(newLength <= MAX_LENGTH)
-    {
-        return YES;
-    } else {
-        NSUInteger emptySpace = MAX_LENGTH - (textView.text.length - range.length);
-        textView.text = [[[textView.text substringToIndex:range.location]
-                          stringByAppendingString:[text substringToIndex:emptySpace]]
-                         stringByAppendingString:[textView.text substringFromIndex:(range.location + range.length)]];
-        return NO;
-    }
 }
 
 - (void)locationManager:(CLLocationManager *)manager didChangeAuthorizationStatus:(CLAuthorizationStatus)status
@@ -352,7 +393,27 @@ HJSettingsPanel *settingsPanel;
     if (mapView.alpha == 0 && didReceiveFirstLocation)
     {
         [self fadeInMap];
+        [self bounceTextView];
     }
+}
+
+// HJNewMessageBubbleDelegate methods
+- (void) didTapView
+{
+    [self toggleMessageView];
+}
+
+- (void) didFinishWithMessage:(NSString *) message
+{
+    [self toggleMessageView];
+    
+    if(![message isEqualToString:@""])
+    {
+        [[HJMessageManager sharedInstance] saveInBackgroundMessage:message withLocation:locationManager.location withCompletionBlock:^(bool succeeded) {
+        [self loadAndDisplayMessages];
+        }];
+    }
+    
 }
 
 @end

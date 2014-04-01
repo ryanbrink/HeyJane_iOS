@@ -44,7 +44,10 @@
     PFObject *messageObject = [PFObject objectWithClassName:PARSE_MESSAGE_CLASS_NAME];
     [messageObject setObject:point forKey:@"location"];
     [messageObject setObject:message forKey:@"message"];
-    [messageObject setObject:[self->userDefaults stringForKey:@"usersName"] forKey:@"usersName"];
+    
+    if ([self->userDefaults stringForKey:@"usersName"] != nil)
+        [messageObject setObject:[self->userDefaults stringForKey:@"usersName"] forKey:@"usersName"];
+
     [messageObject setObject:[NSNumber numberWithInt:0] forKey:@"votes"];
     [messageObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
         if (error != nil)

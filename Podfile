@@ -2,7 +2,7 @@ workspace 'HeyJane'
 
 xcodeproj './Hey Jane/Hey Jane.xcodeproj'
 
-
+pod 'OCMapView'
 pod 'MKMapView+AttributionView', '~> 0.1.0'
 pod 'Reachability', '~> 3.1.1'
 pod 'MBProgressHUD', '~> 0.8'
