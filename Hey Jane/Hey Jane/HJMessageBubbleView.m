@@ -10,9 +10,17 @@
 
 
 @implementation HJMessageBubbleView
+{
+    NSSet *groupedMessages;
+    bool isExpanded;
+}
 @synthesize objectData;
 
+- (void) awakeFromNib
+{
+    isExpanded = FALSE;
 
+}
 - (IBAction) upVote:(id)sender
 {
     [[self objectData] incrementKey:@"votes"];
@@ -35,18 +43,16 @@
     }];
 }
 
-- (void) setIsGroupWith:(NSNumber *) numberOfMessages
+- (void) setIsGroupWith:(NSSet *) groupedMessageViews
 {
-    [self.messageTextView setText:[NSString stringWithFormat:@"%ld messages", (long)[numberOfMessages integerValue]]];
+    isExpanded = FALSE;
+    
+    self->groupedMessages = groupedMessageViews;
+    [self.messageTextView setText:[NSString stringWithFormat:@"%lu messages", (unsigned long)groupedMessageViews.count]];
     [self.messageTextView setFont:[UIFont fontWithName:@"Gill Sans" size:15.0f]];
     
-    CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
+    [self resizeToFitText];
     
-    self.textBackgroundHeightConstraint.constant = rect.size.height;
-    self.usersNameXConstraint.constant = -(self.messageTextView.layer.frame.size.height - rect.size.height);
-    
-    self.subViewVerticalSpace.constant += (self.messageTextView.layer.frame.size.height-20 - rect.size.height);
- 
     [self.downVoteButton setHidden:YES];
     [self.upVoteButton setHidden:YES];
     [self.usersNameLabel setText:@""];
@@ -54,21 +60,35 @@
 
 - (void) setData:(PFObject *) data
 {
+    isExpanded = FALSE;
+    self->groupedMessages = nil;
     [self.downVoteButton setHidden:NO];
     [self.upVoteButton setHidden:NO];
     [self setObjectData:data];
+    
+    // Make sure there is plenty of space for the new message
+    int resize = 300 - (self.textBackgroundImageView.frame.size.height);
+    self.containerHeight.constant += resize;
+    self.subViewVerticalSpace.constant -= resize;
+    
     [self.messageTextView setText:[data valueForKey:@"message"]];
     [self.messageTextView setFont:[UIFont fontWithName:@"Gill Sans" size:15.0f]];
+    [self layoutIfNeeded];
 
-    CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
-    
-    self.textBackgroundHeightConstraint.constant = rect.size.height;
-    self.usersNameXConstraint.constant = -(self.messageTextView.layer.frame.size.height - rect.size.height);
-    
-    self.subViewVerticalSpace.constant += (self.messageTextView.layer.frame.size.height-20 - rect.size.height);
+    [self resizeToFitText];
     
     [self.usersNameLabel setText:[data valueForKey:@"usersName"]];
+}
+
+- (void) resizeToFitText
+{
+    CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
     
+    int resize = rect.size.height + 20 - (self.textBackgroundImageView.frame.size.height);
+    
+    self.containerHeight.constant += resize;
+    self.subViewVerticalSpace.constant -= resize;
+
     [self layoutIfNeeded];
 }
 
@@ -81,7 +101,42 @@
 {
     coordinate = newCoordinate;
 }
+- (IBAction)didPressBackgroundButton:(id)sender {
+    if (groupedMessages == nil)
+        return;
+    
+    if (isExpanded)
+    {
+        [self contract];
+    } else {
+        [self expand];
+    }
+    
+    isExpanded = !isExpanded;
+}
 
+- (void) expand
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.containerHeight.constant += 200;
+        self.subViewVerticalSpace.constant -= 200;
+        
+        [self layoutIfNeeded];
+    }];
+}
+- (void) contract
+{
+    [UIView animateWithDuration:0.3 animations:^{
+        self.containerHeight.constant += -200;
+        self.subViewVerticalSpace.constant -= -200;
+        
+        [self layoutIfNeeded];
+    }];
+}
 
+- (bool) isGroup
+{
+    return groupedMessages != nil;
+}
 
 @end

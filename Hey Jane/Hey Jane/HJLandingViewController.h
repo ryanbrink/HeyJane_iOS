@@ -10,14 +10,15 @@
 #import <MapKit/MapKit.h>
 #import "HJMessageManager.h"
 #import "HJSettingsPanel.h"
-#import "OCMapView.h"
+#import "CCHMapClusterController.h"
+#import "CCHMapClusterAnnotation.h"
 #import "HJNewMessageBubble.h"
 
 @interface HJLandingViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, HJSettingsPanelDelegate, HJNewMessageBubbleDelegate>
 @property (weak, nonatomic) IBOutlet UIButton *messageBubbleBackgroundImage;
 @property (weak, nonatomic) IBOutlet UIButton *messageViewBackgroundButton;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
-@property (weak, nonatomic) IBOutlet OCMapView *mainMapView;
+@property (weak, nonatomic) IBOutlet MKMapView *mainMapView;
 @property (weak, nonatomic) IBOutlet UIImageView *settingsButtonView;
 
 
