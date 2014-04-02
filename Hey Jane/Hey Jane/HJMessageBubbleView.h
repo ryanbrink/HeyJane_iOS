@@ -20,13 +20,18 @@
 @property (strong, nonatomic) PFObject *objectData;
 
 @property (weak, nonatomic) IBOutlet UIView *containerView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *textBackgroundHeightConstraint;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *usersNameXConstraint;
+@property (weak, nonatomic) IBOutlet UIButton *backgroundButton;
+
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UILabel *usersNameLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewHorizontalSpace;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewVerticalSpace;
+@property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerHeight;
 
-- (void) setIsGroupWith:(NSNumber *) numberOfMessages;
+- (void) setIsGroupWith:(NSSet *) groupedMessageViews;
 - (void) setData:(PFObject *) data;
+- (void) expand;
+- (void) contract;
+- (bool) isGroup;
 @end

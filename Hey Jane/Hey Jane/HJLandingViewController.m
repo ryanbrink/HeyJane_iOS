@@ -15,6 +15,7 @@
 #define MESSAGE_BUBBLE_HEIGHT_FROM_BOTTOM 50
 
 @interface HJLandingViewController ()
+@property (strong, nonatomic) CCHMapClusterController *mapClusterController;
 @end
 
 @implementation HJLandingViewController
@@ -38,8 +39,9 @@ HJSettingsPanel *settingsPanel;
     [self.mainMapView setShowsPointsOfInterest:NO];
     [self.mainMapView setShowsBuildings:NO];
     [self.mainMapView setShowsUserLocation:YES];
-    [self.mainMapView setClusteringEnabled:YES];
-    [self.mainMapView setClusteringMethod:OCClusteringMethodBubble];
+    
+    self.mapClusterController = [[CCHMapClusterController alloc] initWithMapView:self.mainMapView];
+    [self.mapClusterController setDelegate:self];
     
     
     self->newMessageBubbleView = [[[NSBundle mainBundle] loadNibNamed:@"HJNewMessageBubble" owner:self options:nil] objectAtIndex:0];
@@ -116,7 +118,6 @@ HJSettingsPanel *settingsPanel;
 
 - (void) bounceTextView
 {
-//    [self.messageTextView setUserInteractionEnabled:NO];
     [UIView animateWithDuration:0.3 delay:0 options:UIViewAnimationOptionCurveEaseOut animations:^{
         CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
         newBubbleFrame.origin.y = self.view.layer.frame.size.height - 60;
@@ -131,6 +132,7 @@ HJSettingsPanel *settingsPanel;
         }];
     }];
 }
+
 - (IBAction)didTouchMessageViewBackground:(id)sender {
     [self toggleMessageView];
 }
@@ -168,8 +170,6 @@ HJSettingsPanel *settingsPanel;
 
 - (void) loadAndDisplayMessages
 {
-    [self.mainMapView removeOverlays:self.mainMapView.overlays];
-    
     [[HJMessageManager sharedInstance] getMessagesInBackgroundWithin:[self getMapDisplaySizeMeters] nearLocation:self.mainMapView.centerCoordinate withCompletionBlock:^(bool succeeded, NSArray *messages) {
         
         NSMutableArray *newMessages = [[NSMutableArray alloc] init];
@@ -204,28 +204,33 @@ HJSettingsPanel *settingsPanel;
             [messageView setData:message];
             messageView.coordinate = CLLocationCoordinate2DMake(point.latitude, point.longitude);
             
-            [self.mainMapView addAnnotation:messageView];
-        }
-        
+            [self.mapClusterController addAnnotations:[NSArray arrayWithObject:messageView] withCompletionHandler:nil];
+        }        
     }];
+}
+
+- (void)mapClusterController:(CCHMapClusterController *)mapClusterController willReuseMapClusterAnnotation:(CCHMapClusterAnnotation *)mapClusterAnnotation
+{
+    HJMessageBubbleView *clusterAnnotationView = (HJMessageBubbleView *)[self.mainMapView viewForAnnotation:mapClusterAnnotation];
     
-    [self.mainMapView doClustering];
+    if(mapClusterAnnotation.annotations.count == 1)
+    {
+       [clusterAnnotationView setData:clusterAnnotationView.objectData];
+    } else {
+        [clusterAnnotationView setIsGroupWith:mapClusterAnnotation.annotations];
+    }
 }
 
 - (MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation
 {
-    if ([annotation isKindOfClass:[OCAnnotation class]]) {
+    if ([annotation isKindOfClass:[CCHMapClusterAnnotation class]]) {
         static NSString * const identifier = @"HJMessageBubbleViewAnnotation";
         
-        OCAnnotation *cluster = (OCAnnotation *) annotation;
+        CCHMapClusterAnnotation *cluster = (CCHMapClusterAnnotation *) annotation;
         
         HJMessageBubbleView* annotationView = (HJMessageBubbleView *)[mapView dequeueReusableAnnotationViewWithIdentifier:identifier];
         
-        if (annotationView)
-        {
-            annotationView.annotation = annotation;
-        }
-        else
+        if (annotationView == nil)
         {
             
             annotationView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
@@ -233,9 +238,16 @@ HJSettingsPanel *settingsPanel;
                                                           options:nil] objectAtIndex:0];
         }
         
-        [annotationView setIsGroupWith:[NSNumber numberWithLong:cluster.annotationsInCluster.count]];
-        [annotationView setCoordinate:annotation.coordinate];
+        annotationView.annotation = annotation;
         
+        if(cluster.annotations.count == 1)
+        {
+            return [[cluster.annotations allObjects] objectAtIndex:0];
+        } else {
+            [annotationView setIsGroupWith:cluster.annotations];
+            [annotationView setCoordinate:annotation.coordinate];
+        }
+
         return annotationView;
     }
     else if ([annotation isKindOfClass:[HJMessageBubbleView class]])
@@ -255,6 +267,7 @@ HJSettingsPanel *settingsPanel;
             annotationView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
                                                                               owner:self
                                                                             options:nil] objectAtIndex:0];
+//            annotationView.centerOffset = CGPointMake(0, -annotationView.layer.frame.size.height);
         }
         
         [annotationView setData:bubbleView.objectData];
@@ -281,26 +294,6 @@ HJSettingsPanel *settingsPanel;
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
-}
-
-- (void) animateInNewMessageView
-{
-    self.messageViewBackgroundButton.hidden = NO;
-    [UIView animateWithDuration:0.4 animations:^{
-        [self->newMessageBubbleView.titleTextView setAlpha:0];
-        CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
-        newBubbleFrame.origin.y = 20;
-        self->newMessageBubbleView.layer.frame = newBubbleFrame;
-        self.messageViewBackgroundButton.alpha = 1;
-        [self->newMessageBubbleView.messageTextView setAlpha:1];
-    } completion:^(BOOL finished) {
-        [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:YES];
-        [self->newMessageBubbleView.messageTextView setText:@""];
-        [self->newMessageBubbleView.messageTextView setTextAlignment:NSTextAlignmentLeft];
-        [self->newMessageBubbleView.messageTextView becomeFirstResponder];
-    }];
-    
-    isShowingNewMessage = !isShowingNewMessage;
 }
 
 - (void) toggleMessageView
@@ -331,6 +324,26 @@ HJSettingsPanel *settingsPanel;
         self.messageViewBackgroundButton.hidden = YES;
         [self->newMessageBubbleView.messageTextView setText:@""];
         [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:NO];
+    }];
+    
+    isShowingNewMessage = !isShowingNewMessage;
+}
+
+- (void) animateInNewMessageView
+{
+    self.messageViewBackgroundButton.hidden = NO;
+    [UIView animateWithDuration:0.4 animations:^{
+        [self->newMessageBubbleView.titleTextView setAlpha:0];
+        CGRect newBubbleFrame = self->newMessageBubbleView.layer.frame;
+        newBubbleFrame.origin.y = 20;
+        self->newMessageBubbleView.layer.frame = newBubbleFrame;
+        self.messageViewBackgroundButton.alpha = 1;
+        [self->newMessageBubbleView.messageTextView setAlpha:1];
+    } completion:^(BOOL finished) {
+        [self->newMessageBubbleView.messageTextView setUserInteractionEnabled:YES];
+        [self->newMessageBubbleView.messageTextView setText:@""];
+        [self->newMessageBubbleView.messageTextView setTextAlignment:NSTextAlignmentLeft];
+        [self->newMessageBubbleView.messageTextView becomeFirstResponder];
     }];
     
     isShowingNewMessage = !isShowingNewMessage;
@@ -371,7 +384,8 @@ HJSettingsPanel *settingsPanel;
                [self loadAndDisplayMessages];
 
                NSLog(@"Setting initial zoom to %dKm.", [kilometers intValue]);
-               
+               if ([kilometers longValue] >= 10000)
+                   kilometers = [NSNumber numberWithInt:10000];
                [self.mainMapView setRegion:MKCoordinateRegionMakeWithDistance(newLocation.coordinate, [kilometers integerValue]*1000, [kilometers integerValue]*1000) animated:didReceiveFirstLocation];
                
                
@@ -381,6 +395,11 @@ HJSettingsPanel *settingsPanel;
     }
     
     didReceiveFirstLocation = YES;
+}
+
+- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
+{
+    [self loadAndDisplayMessages];
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated
