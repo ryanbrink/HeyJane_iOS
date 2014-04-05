@@ -7,14 +7,14 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="HJMessageBubbleView">
-            <rect key="frame" x="0.0" y="0.0" width="346" height="354"/>
+            <rect key="frame" x="0.0" y="0.0" width="173" height="374"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dyu-wg-yfF">
-                    <rect key="frame" x="173" y="0.0" width="173" height="177"/>
+                    <rect key="frame" x="0.0" y="0.0" width="173" height="374"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble-Top" translatesAutoresizingMaskIntoConstraints="NO" id="iX2-qo-jTb">
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble-Top" translatesAutoresizingMaskIntoConstraints="NO" id="iX2-qo-jTb">
                             <rect key="frame" x="0.0" y="20" width="173" height="17"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
@@ -22,15 +22,15 @@
                                 <constraint firstAttribute="height" constant="17" id="tMm-1d-rWY"/>
                             </constraints>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble-Middle" translatesAutoresizingMaskIntoConstraints="NO" id="7F3-or-dv4">
-                            <rect key="frame" x="0.0" y="35" width="173" height="93"/>
+                        <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble-Middle" translatesAutoresizingMaskIntoConstraints="NO" id="7F3-or-dv4">
+                            <rect key="frame" x="0.0" y="35" width="173" height="290"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="173" id="hGc-TX-Kfy"/>
                             </constraints>
                         </imageView>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble-Bottom" translatesAutoresizingMaskIntoConstraints="NO" id="FG1-WG-zde">
-                            <rect key="frame" x="0.0" y="128" width="173" height="47"/>
+                        <imageView contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="HG-Bubble-Bottom" translatesAutoresizingMaskIntoConstraints="NO" id="FG1-WG-zde">
+                            <rect key="frame" x="0.0" y="325" width="173" height="47"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="173" id="G0a-UO-1Pe"/>
@@ -38,7 +38,7 @@
                             </constraints>
                         </imageView>
                         <textView autoresizesSubviews="NO" multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" editable="NO" text="MESSAGE" textAlignment="center" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="0dP-Vr-xAY">
-                            <rect key="frame" x="6" y="26" width="160" height="91"/>
+                            <rect key="frame" x="6" y="26" width="160" height="288"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <color key="tintColor" red="1" green="0.94901960780000005" blue="0.1450980392" alpha="1" colorSpace="calibratedRGB"/>
                             <constraints>
@@ -48,7 +48,7 @@
                             <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                         </textView>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="l0c-Qu-jlR">
-                            <rect key="frame" x="6" y="119" width="153" height="21"/>
+                            <rect key="frame" x="6" y="316" width="153" height="21"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="PUI-6C-NMw"/>
@@ -67,13 +67,13 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EWh-gk-3bu">
-                            <rect key="frame" x="0.0" y="0.0" width="173" height="177"/>
+                            <rect key="frame" x="0.0" y="0.0" width="173" height="374"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <state key="normal">
                                 <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                             </state>
                             <connections>
-                                <action selector="didPressBackgroundButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="7RK-AD-6bU"/>
+                                <action selector="didPressBackgroundButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="soF-QB-t2u"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fpv-EM-Sma">
@@ -105,7 +105,6 @@
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="173" id="1yq-Rp-Tfg"/>
                         <constraint firstItem="Fpv-EM-Sma" firstAttribute="top" secondItem="dyu-wg-yfF" secondAttribute="top" id="3Mv-AR-r11"/>
@@ -113,7 +112,6 @@
                         <constraint firstAttribute="trailing" secondItem="YML-rP-NQW" secondAttribute="trailing" constant="20" id="AgM-q5-I3V"/>
                         <constraint firstItem="l0c-Qu-jlR" firstAttribute="top" secondItem="0dP-Vr-xAY" secondAttribute="bottom" constant="2" id="DnV-uC-nns"/>
                         <constraint firstItem="7F3-or-dv4" firstAttribute="leading" secondItem="dyu-wg-yfF" secondAttribute="leading" id="GrI-94-91y"/>
-                        <constraint firstAttribute="height" constant="177" id="KYZ-Ua-haL"/>
                         <constraint firstItem="FG1-WG-zde" firstAttribute="leading" secondItem="dyu-wg-yfF" secondAttribute="leading" id="Mmi-SO-mTh"/>
                         <constraint firstAttribute="bottom" secondItem="7F3-or-dv4" secondAttribute="bottom" constant="49" id="PUz-Ew-Sqq"/>
                         <constraint firstItem="iX2-qo-jTb" firstAttribute="leading" secondItem="dyu-wg-yfF" secondAttribute="leading" id="QAh-uu-7x1"/>
@@ -132,20 +130,19 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="dyu-wg-yfF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="173" id="2V2-UK-Gxm"/>
+                <constraint firstItem="dyu-wg-yfF" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="2V2-UK-Gxm"/>
+                <constraint firstItem="dyu-wg-yfF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Jf9-uX-6c1"/>
                 <constraint firstItem="dyu-wg-yfF" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="JkF-Yc-vzS"/>
+                <constraint firstAttribute="bottom" secondItem="dyu-wg-yfF" secondAttribute="bottom" id="hmW-H5-acX"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="backgroundButton" destination="EWh-gk-3bu" id="6N3-9m-DVh"/>
-                <outlet property="containerHeight" destination="KYZ-Ua-haL" id="dM0-Es-ttN"/>
                 <outlet property="containerView" destination="dyu-wg-yfF" id="XoZ-dK-7Ia"/>
                 <outlet property="downVoteButton" destination="Fpv-EM-Sma" id="lMH-th-OxC"/>
                 <outlet property="messageTextView" destination="0dP-Vr-xAY" id="65G-Pw-cn2"/>
                 <outlet property="subViewHorizontalSpace" destination="2V2-UK-Gxm" id="xfz-Ea-z6A"/>
-                <outlet property="subViewVerticalSpace" destination="JkF-Yc-vzS" id="NTK-OS-ABH"/>
                 <outlet property="textBackgroundImageView" destination="7F3-or-dv4" id="i8x-kR-G9m"/>
                 <outlet property="upVoteButton" destination="YML-rP-NQW" id="dsj-Tn-Rj4"/>
                 <outlet property="usersNameLabel" destination="l0c-Qu-jlR" id="pyq-yb-Uzf"/>

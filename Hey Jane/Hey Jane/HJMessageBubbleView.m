@@ -13,6 +13,7 @@
 {
     NSSet *groupedMessages;
     bool isExpanded;
+    id<HJMessageBubbleViewDelegate> delegate;
 }
 @synthesize objectData;
 
@@ -21,6 +22,12 @@
     isExpanded = FALSE;
 
 }
+
+- (void) setDelegate:(id<HJMessageBubbleViewDelegate>) newDelegate
+{
+    delegate = newDelegate;
+}
+
 - (IBAction) upVote:(id)sender
 {
     [[self objectData] incrementKey:@"votes"];
@@ -67,29 +74,35 @@
     [self setObjectData:data];
     
     // Make sure there is plenty of space for the new message
-    int resize = 300 - (self.textBackgroundImageView.frame.size.height);
-    self.containerHeight.constant += resize;
-    self.subViewVerticalSpace.constant -= resize;
     
     [self.messageTextView setText:[data valueForKey:@"message"]];
     [self.messageTextView setFont:[UIFont fontWithName:@"Gill Sans" size:15.0f]];
-    [self layoutIfNeeded];
 
     [self resizeToFitText];
     
     [self.usersNameLabel setText:[data valueForKey:@"usersName"]];
 }
 
-- (void) resizeToFitText
+- (void) resizeByHeight:(int)height
 {
-    CGRect rect = [self.messageTextView.layoutManager usedRectForTextContainer:self.messageTextView.textContainer];
+    CGRect frame = self.layer.frame;
+    frame.size.height += height;
+    frame.origin.y -= height;
+    self.layer.frame = frame;
     
-    int resize = rect.size.height + 20 - (self.textBackgroundImageView.frame.size.height);
-    
-    self.containerHeight.constant += resize;
-    self.subViewVerticalSpace.constant -= resize;
+    self.centerOffset = CGPointMake(self.layer.frame.size.width/2, -self.layer.frame.size.height/2);
 
     [self layoutIfNeeded];
+}
+
+- (void) resizeToFitText
+{
+    [self layoutIfNeeded];
+    
+    CGSize rect = [self.messageTextView sizeThatFits:CGSizeMake(self.messageTextView.frame.size.width, FLT_MAX)];
+    
+    int resize = rect.height + 85 - (self.layer.frame.size.height);
+    [self resizeByHeight:resize];
 }
 
 - (CLLocationCoordinate2D)coordinate
@@ -102,7 +115,8 @@
     coordinate = newCoordinate;
 }
 - (IBAction)didPressBackgroundButton:(id)sender {
-    if (groupedMessages == nil)
+    [self->delegate didTouchButton:self];
+//    if (groupedMessages == nil)
         return;
     
     if (isExpanded)
@@ -118,19 +132,13 @@
 - (void) expand
 {
     [UIView animateWithDuration:0.3 animations:^{
-        self.containerHeight.constant += 200;
-        self.subViewVerticalSpace.constant -= 200;
-        
-        [self layoutIfNeeded];
+        [self resizeByHeight:200];
     }];
 }
 - (void) contract
 {
     [UIView animateWithDuration:0.3 animations:^{
-        self.containerHeight.constant += -200;
-        self.subViewVerticalSpace.constant -= -200;
-        
-        [self layoutIfNeeded];
+        [self resizeByHeight:-200];
     }];
 }
 
