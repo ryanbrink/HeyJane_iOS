@@ -199,8 +199,9 @@ HJSettingsPanel *settingsPanel;
             HJMessageBubbleView *messageView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
                                                                               owner:self
                                                                             options:nil] objectAtIndex:0];
+            [messageView setTranslatesAutoresizingMaskIntoConstraints:YES];
             
-            
+            [messageView setDelegate:self];
             [messageView setData:message];
             messageView.coordinate = CLLocationCoordinate2DMake(point.latitude, point.longitude);
             
@@ -236,6 +237,9 @@ HJSettingsPanel *settingsPanel;
             annotationView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
                                                             owner:self
                                                           options:nil] objectAtIndex:0];
+            
+            [annotationView setDelegate:self];
+            [annotationView setTranslatesAutoresizingMaskIntoConstraints:YES];
         }
         
         annotationView.annotation = annotation;
@@ -267,7 +271,8 @@ HJSettingsPanel *settingsPanel;
             annotationView = [[[NSBundle mainBundle] loadNibNamed:@"HJMessageBubbleView"
                                                                               owner:self
                                                                             options:nil] objectAtIndex:0];
-//            annotationView.centerOffset = CGPointMake(0, -annotationView.layer.frame.size.height);
+            [annotationView setDelegate:self];
+            [annotationView setTranslatesAutoresizingMaskIntoConstraints:YES];
         }
         
         [annotationView setData:bubbleView.objectData];
@@ -281,6 +286,10 @@ HJSettingsPanel *settingsPanel;
     }
 }
 
+-(void)didTouchButton:(UIView *) bubbleTouched
+{
+    [[bubbleTouched superview] bringSubviewToFront:bubbleTouched];
+}
 
 - (void) fadeInMap
 {
@@ -395,11 +404,6 @@ HJSettingsPanel *settingsPanel;
     }
     
     didReceiveFirstLocation = YES;
-}
-
-- (void)mapView:(MKMapView *)mapView regionWillChangeAnimated:(BOOL)animated
-{
-    [self loadAndDisplayMessages];
 }
 
 - (void)mapView:(MKMapView *)mapView regionDidChangeAnimated:(BOOL)animated

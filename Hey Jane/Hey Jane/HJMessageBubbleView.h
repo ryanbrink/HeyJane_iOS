@@ -10,6 +10,12 @@
 #import <MapKit/MapKit.h>
 #import <Parse/Parse.h>
 
+@protocol HJMessageBubbleViewDelegate <NSObject>
+
+-(void)didTouchButton:(UIView *) bubbleTouched;
+
+@end
+
 @interface HJMessageBubbleView : MKAnnotationView <MKAnnotation>
 {
     CLLocationCoordinate2D coordinate;
@@ -25,10 +31,9 @@
 @property (weak, nonatomic) IBOutlet UITextView *messageTextView;
 @property (weak, nonatomic) IBOutlet UILabel *usersNameLabel;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewHorizontalSpace;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *subViewVerticalSpace;
 @property (weak, nonatomic) IBOutlet UIImageView *textBackgroundImageView;
-@property (weak, nonatomic) IBOutlet NSLayoutConstraint *containerHeight;
 
+- (void) setDelegate:(id<HJMessageBubbleViewDelegate>) newDelegate;
 - (void) setIsGroupWith:(NSSet *) groupedMessageViews;
 - (void) setData:(PFObject *) data;
 - (void) expand;

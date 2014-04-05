@@ -13,8 +13,10 @@
 #import "CCHMapClusterController.h"
 #import "CCHMapClusterAnnotation.h"
 #import "HJNewMessageBubble.h"
+#import "HJMessageBubbleView.h"
 
-@interface HJLandingViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, HJSettingsPanelDelegate, HJNewMessageBubbleDelegate>
+@interface HJLandingViewController : UIViewController <MKMapViewDelegate, CLLocationManagerDelegate, HJSettingsPanelDelegate, HJNewMessageBubbleDelegate, HJMessageBubbleViewDelegate>
+
 @property (weak, nonatomic) IBOutlet UIButton *messageBubbleBackgroundImage;
 @property (weak, nonatomic) IBOutlet UIButton *messageViewBackgroundButton;
 @property (weak, nonatomic) IBOutlet UIImageView *logoImageView;
