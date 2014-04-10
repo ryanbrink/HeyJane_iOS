@@ -2,7 +2,6 @@ workspace 'HeyJane'
 
 xcodeproj './Hey Jane/Hey Jane.xcodeproj'
 
-pod 'TestFlightSDK', '~> 3.0.0'
 pod 'CCHMapClusterController'
 pod 'MKMapView+AttributionView', '~> 0.1.0'
 pod 'Reachability', '~> 3.1.1'
