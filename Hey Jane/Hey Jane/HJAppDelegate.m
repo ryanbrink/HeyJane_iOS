@@ -9,6 +9,7 @@
 #import "HJAppDelegate.h"
 #import <Parse/Parse.h>
 #import "HJLandingViewController.h"
+#import <TestFlightSDK/TestFlight.h>
 
 @implementation HJAppDelegate
 
@@ -20,6 +21,8 @@
     
     [Parse setApplicationId:@"DUp9qMI1BV0Kxj1cfixxTdoeUMihoFh6o5Xys0U4"
                   clientKey:@"yufVujMbbyHlR6mzDFx71RIhQuWlbkNTShdvFrF7"];
+    
+    [TestFlight takeOff:@"94f94316-a609-41ab-a461-e889482a0541"];
     
     UIViewController *loginView = [[HJLandingViewController alloc] initWithNibName:@"HJLandingViewController" bundle:nil];
     
