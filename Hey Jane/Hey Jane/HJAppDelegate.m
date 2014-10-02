@@ -9,6 +9,7 @@
 #import "HJAppDelegate.h"
 #import <Parse/Parse.h>
 #import "HJLandingViewController.h"
+#import "HJSecretKeys.h"
 
 @implementation HJAppDelegate
 
@@ -18,8 +19,8 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    [Parse setApplicationId:@"DUp9qMI1BV0Kxj1cfixxTdoeUMihoFh6o5Xys0U4"
-                  clientKey:@"yufVujMbbyHlR6mzDFx71RIhQuWlbkNTShdvFrF7"];
+    [Parse setApplicationId:PARSE_APP_ID
+                  clientKey:PARSE_CLIENT_KEY;
     
     UIViewController *loginView = [[HJLandingViewController alloc] initWithNibName:@"HJLandingViewController" bundle:nil];
     
