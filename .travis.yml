@@ -1,0 +1,3 @@
+language: objective-c
+xcode_project: HeyJane_iOS/Hey\ Jane/Hey\ Jane.xcodeproj
+xcode_scheme: Hey\ Jane
