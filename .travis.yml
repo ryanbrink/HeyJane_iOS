@@ -1,4 +1,4 @@
 language: objective-c
 before_install: pod repo add PublicPods https://github.com/ryno2019/PublicPods.git
-xcode_project: HeyJane_iOS/Hey\ Jane/Hey\ Jane.xcodeproj
-xcode_scheme: Hey\ Jane
+xcode_project: "Hey Jane/Hey Jane.xcodeproj"
+xcode_scheme: "Hey Jane"
